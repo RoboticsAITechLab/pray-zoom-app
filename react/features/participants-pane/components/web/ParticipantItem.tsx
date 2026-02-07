@@ -1,9 +1,11 @@
 import React, { ReactNode, useCallback } from 'react';
 import { WithTranslation } from 'react-i18next';
+import { useSelector } from 'react-redux';
 import { makeStyles } from 'tss-react/mui';
 
 import Avatar from '../../../base/avatar/components/Avatar';
 import { translate } from '../../../base/i18n/functions';
+import { IReduxState } from '../../../app/types';
 import ListItem from '../../../base/ui/components/web/ListItem';
 import {
     ACTION_TRIGGER,
@@ -13,8 +15,10 @@ import {
     MediaState,
     VideoStateIcons
 } from '../../constants';
+import { getParticipantRole } from '../../../roles/functions';
 
 import { RaisedHandIndicator } from './RaisedHandIndicator';
+import RoleBadge from './RoleBadge';
 
 interface IProps extends WithTranslation {
 
@@ -143,13 +147,14 @@ function ParticipantItem({
     videoMediaState = MEDIA_STATE.NONE,
     youText
 }: IProps) {
+    const { classes } = useStyles();
+    const participantRole = useSelector((state: IReduxState) => getParticipantRole(state, participantID));
+
     const onClick = useCallback(
         () => openDrawerForParticipant?.({
             participantID,
             displayName
         }), []);
-
-    const { classes } = useStyles();
 
     const icon = (
         <Avatar
@@ -164,6 +169,7 @@ function ParticipantItem({
             <div className = { classes.nameContainer }>
                 <div className = { classes.name }>
                     {displayName}
+                    <RoleBadge role={participantRole} />
                 </div>
                 {local ? <span>&nbsp;({youText})</span> : null}
             </div>

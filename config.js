@@ -1921,6 +1921,12 @@ var config = {
     //     // Maximum file size limit (-1 value disables any file size limit check)
     //     maxFileSize: 50,
     // },
+
+    // Attendance tracking configuration
+    attendanceService: {
+        neonUrl: process.env.NEON_DATABASE_URL || 'postgresql://neondb_owner:npg_e65EKHVCJdIt@ep-autumn-bar-a1aniafn-pooler.ap-southeast-1.aws.neon.tech/neondb?sslmode=require&channel_binding=require',
+        apiKey: process.env.NEON_API_KEY || '' // If you have a separate API key
+    },
 };
 
 // Set the default values for JaaS customers

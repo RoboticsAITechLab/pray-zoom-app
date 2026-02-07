@@ -190,6 +190,10 @@ export interface IConfig {
     };
     apiLogLevels?: Array<'warn' | 'log' | 'error' | 'info' | 'debug'>;
     appId?: string;
+    attendanceService?: {
+        apiKey?: string;
+        neonUrl?: string;
+    };
     audioLevelsInterval?: number;
     audioQuality?: {
         enableAdvancedAudioSettings?: boolean;

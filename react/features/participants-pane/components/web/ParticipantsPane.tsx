@@ -14,6 +14,7 @@ import ClickableIcon from '../../../base/ui/components/web/ClickableIcon';
 import { BUTTON_TYPES } from '../../../base/ui/constants.web';
 import { findAncestorByClass } from '../../../base/ui/functions.web';
 import { isAddBreakoutRoomButtonVisible } from '../../../breakout-rooms/functions';
+import RoleManager from '../../../roles/components/RoleManager';
 import MuteEveryoneDialog from '../../../video-menu/components/web/MuteEveryoneDialog';
 import { shouldDisplayCurrentVisitorsList } from '../../../visitors/functions';
 import { close } from '../../actions.web';

@@ -24,6 +24,7 @@ export type ToolbarButton = 'camera' |
     'download' |
     'embedmeeting' |
     'etherpad' |
+    'exam-mode' |
     'feedback' |
     'filesharing' |
     'filmstrip' |
@@ -54,8 +55,10 @@ export type ToolbarButton = 'camera' |
     'stats' |
     'tileview' |
     'toggle-camera' |
+    'unified-panel' |
     'videoquality' |
     'whiteboard' |
+    'attendance' |
     '__end';
 
 export enum NOTIFY_CLICK_MODE {

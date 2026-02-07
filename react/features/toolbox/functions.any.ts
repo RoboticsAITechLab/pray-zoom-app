@@ -4,6 +4,7 @@ import { isJwtFeatureEnabledStateless } from '../base/jwt/functions';
 import { IGUMPendingState } from '../base/media/types';
 import { IParticipantFeatures } from '../base/participants/types';
 import { toState } from '../base/redux/functions';
+import { hasRoleOrHigher } from '../roles/functions';
 import { iAmVisitor } from '../visitors/functions';
 
 import { VISITORS_MODE_BUTTONS } from './constants';
@@ -91,5 +92,49 @@ export function getToolbarButtons(stateful: IStateful, definedToolbarButtons: st
 export function isButtonEnabled(buttonName: string, state: IReduxState | Array<string>) {
     const buttons = Array.isArray(state) ? state : state['features/toolbox'].toolbarButtons || [];
 
-    return buttons.includes(buttonName);
+    if (!buttons.includes(buttonName)) {
+        return false;
+    }
+
+    // Check room mode restrictions
+    if (!Array.isArray(state)) {
+        const currentMode = (state as any)['features/roomMode']?.currentMode;
+        const examMode = (state as any)['features/examMode'];
+
+        if (currentMode === 'EXAM' || examMode?.enabled) {
+            // Hide chat and screen share in exam mode
+            if (buttonName === 'chat' || buttonName === 'desktop') {
+                return false;
+            }
+        }
+
+        // Check exam mode specific restrictions
+        if (examMode?.enabled) {
+            const restrictions = examMode.restrictions;
+
+            if (buttonName === 'chat' && restrictions.disableChat) {
+                return false;
+            }
+            if (buttonName === 'desktop' && restrictions.disableScreenShare) {
+                return false;
+            }
+            if (buttonName === 'settings' && restrictions.disableSettings) {
+                return false;
+            }
+            if (buttonName === 'invite' && restrictions.disableInvite) {
+                return false;
+            }
+        }
+
+        // Check role permissions
+        if (buttonName === 'mute-everyone' && !hasRoleOrHigher(state, 'HOST')) {
+            return false;
+        }
+        if (buttonName === 'desktop' && !hasRoleOrHigher(state, 'CO_HOST')) {
+            return false;
+        }
+        // Add more as needed
+    }
+
+    return true;
 }

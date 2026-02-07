@@ -237,6 +237,9 @@ function getConfig(options = {}) {
                 path: false,
                 process: false
             }
+        },
+        watchOptions: {
+            ignored: [ '**/node_modules/**', '**/.git/**', '**/build/**' ]
         }
     };
 }
@@ -274,7 +277,12 @@ function getDevServerConfig() {
         static: {
             directory: process.cwd(),
             watch: {
-                ignored: file => file.endsWith('.log')
+                ignored: [
+                    '**/node_modules/**',
+                    '**/.git/**',
+                    '**/build/**',
+                    file => file.endsWith('.log')
+                ]
             }
         }
     };

@@ -23,6 +23,7 @@ import { isStageFilmstripAvailable } from '../../../filmstrip/functions.web';
 import { QUICK_ACTION_BUTTON } from '../../../participants-pane/constants';
 import { getQuickActionButtonType } from '../../../participants-pane/functions';
 import { requestRemoteControl, stopController } from '../../../remote-control/actions';
+import { addCoHost, addHost, addLeader, removeCoHost, removeHost, removeLeader } from '../../../roles/actions';
 import { getParticipantMenuButtonsWithNotifyClick, showOverflowDrawer } from '../../../toolbox/functions.web';
 import { NOTIFY_CLICK_MODE } from '../../../toolbox/types';
 import { PARTICIPANT_MENU_BUTTONS as BUTTONS } from '../../constants';

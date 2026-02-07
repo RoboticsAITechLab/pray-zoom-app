@@ -4,13 +4,14 @@ import { batch, useDispatch, useSelector } from 'react-redux';
 import { ACTION_SHORTCUT_TRIGGERED, createShortcutEvent } from '../analytics/AnalyticsEvents';
 import { sendAnalytics } from '../analytics/functions';
 import { IReduxState } from '../app/types';
+import { useAttendanceButton } from '../attendance/hooks.web';
 import { toggleDialog } from '../base/dialog/actions';
 import { isIosMobileBrowser, isIpadMobileBrowser } from '../base/environment/utils';
 import { HELP_BUTTON_ENABLED } from '../base/flags/constants';
 import { getFeatureFlag } from '../base/flags/functions';
 import JitsiMeetJS from '../base/lib-jitsi-meet';
 import { raiseHand } from '../base/participants/actions';
-import { getLocalParticipant, hasRaisedHand } from '../base/participants/functions';
+import { getLocalParticipant, hasRaisedHand, isLocalParticipantModerator } from '../base/participants/functions';
 import { isToggleCameraEnabled } from '../base/tracks/functions.web';
 import { toggleChat } from '../chat/actions.web';
 import { isChatDisabled } from '../chat/functions';
@@ -18,6 +19,7 @@ import { useChatButton } from '../chat/hooks.web';
 import { useCustomPanelButton } from '../custom-panel/hooks.web';
 import { useEmbedButton } from '../embed-meeting/hooks';
 import { useEtherpadButton } from '../etherpad/hooks';
+import ExamModeButton from '../exam-mode/components/ExamModeButton';
 import { useFeedbackButton } from '../feedback/hooks.web';
 import { useFileSharingButton } from '../file-sharing/hooks.web';
 import { setGifMenuVisibility } from '../gifs/actions';
@@ -26,6 +28,8 @@ import InviteButton from '../invite/components/add-people-dialog/web/InviteButto
 import { registerShortcut, unregisterShortcut } from '../keyboard-shortcuts/actions';
 import { useKeyboardShortcutsButton } from '../keyboard-shortcuts/hooks';
 import NoiseSuppressionButton from '../noise-suppression/components/NoiseSuppressionButton';
+import { useUnifiedPanelButton } from '../unified-panel/hooks';
+import UnifiedPanelButton from '../unified-panel/components/web/UnifiedPanelButton';
 import {
     close as closeParticipantsPane,
     open as openParticipantsPane
@@ -80,25 +84,37 @@ import { ICustomToolbarButton, IToolboxButton, ToolbarButton } from './types';
 const microphone = {
     key: 'microphone',
     Content: AudioSettingsButton,
-    group: 0
+    group: 0 // Essential - always visible
 };
 
 const camera = {
     key: 'camera',
     Content: VideoSettingsButton,
-    group: 0
-};
-
-const profile = {
-    key: 'profile',
-    Content: ProfileButton,
-    group: 1
+    group: 0 // Essential - always visible
 };
 
 const desktop = {
     key: 'desktop',
     Content: ShareDesktopButton,
-    group: 2
+    group: 0 // Essential for screen sharing
+};
+
+const unifiedPanel = {
+    key: 'unified-panel',
+    Content: UnifiedPanelButton,
+    group: 0 // Essential for accessing panels
+};
+
+const profile = {
+    key: 'profile',
+    Content: ProfileButton,
+    group: 1 // User settings
+};
+
+const settings = {
+    key: 'settings',
+    Content: SettingsButton,
+    group: 1 // App settings
 };
 
 // In Narrow layout and mobile web we are using drawer for popups and that is why it is better to include
@@ -107,67 +123,67 @@ const desktop = {
 const raisehand = {
     key: 'raisehand',
     Content: RaiseHandContainerButton,
-    group: 2
+    group: 2 // Secondary - reactions
 };
 
 const invite = {
     key: 'invite',
     Content: InviteButton,
-    group: 2
+    group: 2 // Secondary - room management
 };
 
 const toggleCamera = {
     key: 'toggle-camera',
     Content: ToggleCameraButton,
-    group: 2
+    group: 2 // Secondary - camera controls
 };
 
 const videoQuality = {
     key: 'videoquality',
     Content: VideoQualityButton,
-    group: 2
+    group: 3 // Advanced - quality settings
 };
 
 const fullscreen = {
     key: 'fullscreen',
     Content: FullscreenButton,
-    group: 2
+    group: 2 // Secondary - view controls
 };
 
 const linkToSalesforce = {
     key: 'linktosalesforce',
     Content: LinkToSalesforceButton,
-    group: 2
+    group: 4 // Overflow - integrations
 };
 
 const shareAudio = {
     key: 'shareaudio',
     Content: ShareAudioButton,
-    group: 3
+    group: 3 // Advanced - audio sharing
 };
 
 const noiseSuppression = {
     key: 'noisesuppression',
     Content: NoiseSuppressionButton,
-    group: 3
-};
-
-const settings = {
-    key: 'settings',
-    Content: SettingsButton,
-    group: 4
+    group: 3 // Advanced - audio processing
 };
 
 const download = {
     key: 'download',
     Content: DownloadButton,
-    group: 4
+    group: 4 // Overflow - downloads
 };
 
 const help = {
     key: 'help',
     Content: HelpButton,
-    group: 4
+    group: 4 // Overflow - help
+};
+
+const examMode = {
+    key: 'exam-mode',
+    Content: ExamModeButton,
+    group: 1 // Primary - mode controls
 };
 
 /**
@@ -261,6 +277,19 @@ function useHelpButton() {
 }
 
 /**
+ * A hook that returns the exam mode button if the user can control it.
+ *
+ * @returns {Object | undefined}
+ */
+function useExamModeButton() {
+    const isModerator = useSelector((state: IReduxState) => isLocalParticipantModerator(state));
+
+    if (isModerator) {
+        return examMode;
+    }
+}
+
+/**
 * Returns all buttons that could be rendered.
 *
 * @param {Object} _customToolbarButtons - An array containing custom buttons objects.
@@ -294,12 +323,18 @@ export function useToolboxButtons(
     const _download = useDownloadButton();
     const _help = useHelpButton();
     const customPanel = useCustomPanelButton();
+    const attendance = useAttendanceButton();
+    const examModeButton = useExamModeButton();
+    const unifiedPanelButton = useUnifiedPanelButton();
 
     const buttons: { [key in ToolbarButton]?: IToolboxButton; } = {
         microphone,
         camera,
-        profile,
         desktop: desktopSharing,
+        'unified-panel': unifiedPanelButton,
+        profile,
+        settings,
+        'exam-mode': examModeButton,
         chat,
         raisehand,
         reactions,
@@ -307,15 +342,14 @@ export function useToolboxButtons(
         invite,
         tileview,
         'toggle-camera': toggleCameraButton,
-        videoquality: videoQuality,
         fullscreen: _fullscreen,
+        videoquality: videoQuality,
         security,
         closedcaptions: cc,
         polls,
         filesharing,
         recording,
         livestreaming: liveStreaming,
-        linktosalesforce,
         sharedvideo: shareVideo,
         shareaudio,
         noisesuppression: noiseSuppression,
@@ -323,13 +357,14 @@ export function useToolboxButtons(
         etherpad,
         'select-background': virtualBackground,
         stats: speakerStats,
-        settings,
         shortcuts,
         embedmeeting: embed,
         feedback,
+        linktosalesforce,
         download: _download,
         help: _help,
-        'custom-panel': customPanel
+        'custom-panel': customPanel,
+        attendance
     };
     const buttonKeys = Object.keys(buttons) as ToolbarButton[];
 

@@ -124,6 +124,7 @@ export const MAIN_TOOLBAR_BUTTONS_PRIORITY = [
     'feedback',
     'download',
     'help',
+    'exam-mode',
     'custom-panel'
 ];
 
@@ -154,6 +155,7 @@ export const TOOLBAR_BUTTONS: ToolbarButton[] = [
     'download',
     'embedmeeting',
     'etherpad',
+    'exam-mode',
     'feedback',
     'filesharing',
     'filmstrip',
@@ -183,7 +185,8 @@ export const TOOLBAR_BUTTONS: ToolbarButton[] = [
     'tileview',
     'toggle-camera',
     'videoquality',
-    'whiteboard'
+    'whiteboard',
+    'attendance'
 ];
 
 /**

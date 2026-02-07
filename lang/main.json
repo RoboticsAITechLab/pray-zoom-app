@@ -82,7 +82,7 @@
     },
     "calendarSync": {
         "addMeetingURL": "Add a meeting link",
-        "confirmAddLink": "Do you want to add a Jitsi link to this event?",
+        "confirmAddLink": "Do you want to add a FaithMeet link to this event?",
         "error": {
             "appConfiguration": "Calendar integration is not properly configured.",
             "generic": "An error has occurred. Please check your calendar settings or try refreshing the calendar.",
@@ -107,6 +107,20 @@
             "title": "Car mode",
             "videoStopped": "Your video is stopped"
         }
+    },
+    "examMode": {
+        "active": "Exam Mode Active",
+        "cameraRecommended": "Camera Recommended for Exam Integrity",
+        "copyPasteBlocked": "Copy/Paste Blocked",
+        "copyPasteDescription": "Copy and paste operations are disabled during exam mode.",
+        "fullscreenRequired": "Exam Mode – Fullscreen Required",
+        "hostControls": "Host Controls Available",
+        "rightClickBlocked": "Right Click Blocked",
+        "rightClickDescription": "Right-click context menu is disabled during exam mode.",
+        "tabSwitchWarning": "Tab Switch Detected",
+        "tabSwitchDescription": "Switching tabs is not recommended during exam mode.",
+        "timerLabel": "Exam Time Remaining:",
+        "warnings": "Warnings"
     },
     "chat": {
         "disabled": "Sending chat messages is disabled.",
@@ -1331,6 +1345,7 @@
             "endConference": "End meeting for all",
             "enterFullScreen": "View full screen",
             "enterTileView": "Enter tile view",
+            "examMode": "Toggle exam mode",
             "exitFullScreen": "Exit full screen",
             "exitTileView": "Exit tile view",
             "expand": "Expand",
@@ -1666,16 +1681,16 @@
         "getHelp": "Get help",
         "go": "GO",
         "goSmall": "GO",
-        "headerSubtitle": "Secure and high quality meetings",
-        "headerTitle": "Jitsi Meet",
+        "headerSubtitle": "Prayer, teaching, and exam meetings",
+        "headerTitle": "FaithMeet",
         "info": "Dial-in info",
-        "jitsiOnMobile": "Jitsi on mobile – download our apps and start a meeting from anywhere",
+        "jitsiOnMobile": "FaithMeet on mobile – download our app and start a meeting from anywhere",
         "join": "CREATE / JOIN",
         "logo": {
             "calendar": "Calendar logo",
             "desktopPreviewThumbnail": "Desktop preview thumbnail",
             "googleLogo": "Google Logo",
-            "logoDeepLinking": "Jitsi meet logo",
+            "logoDeepLinking": "FaithMeet logo",
             "microsoftLogo": "Microsoft logo",
             "policyLogo": "Policy logo"
         },
@@ -1697,7 +1712,7 @@
         "settings": "Settings",
         "startMeeting": "Start meeting",
         "terms": "Terms",
-        "title": "Secure, fully featured, and completely free video conferencing",
+        "title": "FaithMeet – prayer, teaching, and exam video meetings",
         "upcomingMeetings": "Your upcoming meetings"
     },
     "whiteboard": {
@@ -1705,5 +1720,68 @@
             "heading": "Whiteboard"
         },
         "screenTitle": "Whiteboard"
+    },
+    "roles": {
+        "founder": "Founder",
+        "host": "Host",
+        "coHost": "Co-Host",
+        "leader": "Leader"
+    },
+    "roomMode": {
+        "examMode": "Exam",
+        "prayerMode": "Prayer"
+    },
+    "safety": {
+        "endMeetingConfirm": "End Meeting for All?",
+        "endMeetingWarning": "This will end the meeting for everyone",
+        "endMeetingMessage": "Are you sure you want to end this meeting? This action cannot be undone.",
+        "endMeeting": "End Meeting",
+        "waitBeforeConfirm": "Please wait {{seconds}} seconds before confirming",
+        "meetingEnded": "Meeting ended for all participants",
+
+        "roleChangeConfirm": "Confirm Role Change",
+        "roleChangeWarning": "This will modify participant permissions",
+        "roleChangeMessage": "Are you sure you want to {{action}}?",
+        "removeHost": "remove host privileges",
+        "removeCoHost": "remove co-host privileges",
+        "removeLeader": "remove leader privileges",
+        "setFounder": "set as founder",
+        "removeHostWarning": "Removing host privileges may affect meeting control",
+        "removeCoHostWarning": "Removing co-host privileges may limit assistance capabilities",
+        "removeLeaderWarning": "Removing leader privileges may affect group coordination",
+        "setFounderWarning": "Setting founder grants highest level permissions",
+        "roleChangeBlocked": "Role change blocked by safety rules",
+        "roleChangeCooldown": "Please wait before making role changes",
+        "roleChanged": "Role changed successfully",
+
+        "enableExamMode": "Enable Exam Mode",
+        "examModeWarning": "Exam restrictions will be applied immediately",
+        "examModeMessage": "This will enable exam mode with the following restrictions:",
+        "examModeRestrictions": "Exam Mode Restrictions",
+        "restriction1": "Participants cannot share their screen",
+        "restriction2": "Participants cannot start their video",
+        "restriction3": "Chat may be limited or disabled",
+        "restriction4": "Additional security measures applied",
+        "confirmExamMode": "I understand and accept these restrictions",
+        "examModeEnabled": "Exam mode enabled - restrictions applied",
+
+        "modeChangeWarning": "Mode Change Warning",
+        "examToMeetWarning": "Switching from Exam to Meeting mode",
+        "examToMeetMessage": "You are about to remove exam restrictions. This will:",
+        "whatWillChange": "What will change",
+        "change1": "Allow screen sharing for all participants",
+        "change2": "Allow video for all participants",
+        "change3": "Restore full chat functionality",
+        "change4": "Remove exam security measures",
+        "confirmChange": "Confirm Mode Change",
+        "keepExamMode": "Keep Exam Mode",
+        "modeChangeCooldown": "Please wait before changing modes",
+        "modeChanged": "Mode changed successfully",
+
+        "dbFallbackUsed": "Database unavailable - data saved locally",
+        "dbError": "Attendance tracking error - data may be lost",
+
+        "confirm": "Confirm",
+        "cancel": "Cancel"
     }
 }

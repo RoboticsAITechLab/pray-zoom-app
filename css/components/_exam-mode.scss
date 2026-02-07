@@ -1,0 +1,82 @@
+/**
+ * Exam Mode Lockdown Feature - UI Layer Only.
+ *
+ * Styles for exam mode components.
+ */
+
+.exam-mode-container {
+    position: relative;
+    z-index: 1000;
+}
+
+.exam-mode-timer-banner {
+    background: #d32f2f;
+    color: white;
+    padding: 8px 16px;
+    text-align: center;
+    font-weight: bold;
+    border-radius: 4px;
+    margin: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.exam-mode-banner {
+    background: #f44336;
+    color: white;
+    padding: 8px 16px;
+    text-align: center;
+    font-weight: bold;
+    border-radius: 4px;
+    margin: 8px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    animation: pulse 2s infinite;
+}
+
+.exam-mode-fullscreen-warning {
+    background: #ff9800;
+}
+
+.exam-mode-tab-warning {
+    background: #ff5722;
+}
+
+.exam-mode-camera-warning {
+    background: #2196f3;
+}
+
+.exam-mode-active-indicator {
+    background: #4caf50;
+    color: white;
+    padding: 4px 12px;
+    border-radius: 16px;
+    font-size: 12px;
+    margin: 8px;
+    display: inline-block;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.warning-count {
+    font-weight: bold;
+    margin-left: 8px;
+}
+
+.timer-text {
+    font-family: monospace;
+}
+
+.moderator-controls {
+    margin-left: 8px;
+    opacity: 0.8;
+}
+
+@keyframes pulse {
+    0% {
+        opacity: 1;
+    }
+    50% {
+        opacity: 0.7;
+    }
+    100% {
+        opacity: 1;
+    }
+}

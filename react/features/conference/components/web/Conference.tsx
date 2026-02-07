@@ -6,6 +6,7 @@ import { connect as reactReduxConnect, useDispatch, useSelector, useStore } from
 // @ts-expect-error
 import VideoLayout from '../../../../../modules/UI/videolayout/VideoLayout';
 import { IReduxState, IStore } from '../../../app/types';
+import AttendancePanel from '../../../attendance/components/AttendancePanel';
 import { getConferenceNameForTitle } from '../../../base/conference/functions';
 import { hangup } from '../../../base/connection/actions.web';
 import { isMobileBrowser } from '../../../base/environment/utils';
@@ -15,6 +16,7 @@ import { openChat, setFocusedTab } from '../../../chat/actions.web';
 import Chat from '../../../chat/components/web/Chat';
 import { ChatTabs } from '../../../chat/constants';
 import CustomPanel from '../../../custom-panel/components/web/CustomPanel';
+import ExamModeIndicator from '../../../exam-mode/components/ExamModeIndicator';
 import { isFileUploadingEnabled, processFiles } from '../../../file-sharing/functions.any';
 import MainFilmstrip from '../../../filmstrip/components/web/MainFilmstrip';
 import ScreenshareFilmstrip from '../../../filmstrip/components/web/ScreenshareFilmstrip';
@@ -25,9 +27,14 @@ import LobbyScreen from '../../../lobby/components/web/LobbyScreen';
 import { getIsLobbyVisible } from '../../../lobby/functions';
 import { getOverlayToRender } from '../../../overlay/functions.web';
 import ParticipantsPane from '../../../participants-pane/components/web/ParticipantsPane';
+import { setPrejoinPageVisibility } from '../../../prejoin/actions.web';
 import Prejoin from '../../../prejoin/components/web/Prejoin';
 import { isPrejoinPageVisible } from '../../../prejoin/functions.web';
 import ReactionAnimations from '../../../reactions/components/web/ReactionsAnimations';
+import { hasRoleOrHigher } from '../../../roles/functions';
+import RoomModeSelector from '../../../room-mode/components/RoomModeSelector';
+import { RoomMode } from '../../../room-mode/types';
+import '../../../safety'; // Import safety middleware
 import { toggleToolboxVisible } from '../../../toolbox/actions.any';
 import { fullScreenChanged, showToolbox } from '../../../toolbox/actions.web';
 import JitsiPortal from '../../../toolbox/components/web/JitsiPortal';
@@ -36,16 +43,12 @@ import { LAYOUT_CLASSNAMES } from '../../../video-layout/constants';
 import { getCurrentLayout } from '../../../video-layout/functions.any';
 import VisitorsQueue from '../../../visitors/components/web/VisitorsQueue';
 import { showVisitorsQueue } from '../../../visitors/functions';
-import { init } from '../../actions.web';
 import { maybeShowSuboptimalExperienceNotification } from '../../functions.web';
-import {
-    AbstractConference,
-    type AbstractProps,
-    abstractMapStateToProps
-} from '../AbstractConference';
+import { AbstractConference, AbstractProps, abstractMapStateToProps } from '../AbstractConference';
 
 import ConferenceInfo from './ConferenceInfo';
 import { default as Notice } from './Notice';
+import UnifiedSidePanel from '../../../unified-panel/components/web/UnifiedSidePanel';
 
 /**
  * DOM events for when full screen mode has changed. Different browsers need
@@ -71,9 +74,19 @@ interface IProps extends AbstractProps, WithTranslation {
     _backgroundAlpha?: number;
 
     /**
+     * The current room mode.
+     */
+    _currentMode: RoomMode;
+
+    /**
      * Are any overlays visible?
      */
     _isAnyOverlayVisible: boolean;
+
+    /**
+     * Whether the local participant is host or higher.
+     */
+    _isLocalHostOrHigher: boolean;
 
     /**
      * The CSS class to apply to the root of {@link Conference} to modify the
@@ -288,6 +301,12 @@ class Conference extends AbstractConference<IProps, any> {
                     onMouseMove = { isMobileBrowser() ? undefined : this._onShowToolbar }>
                     { _showPrejoin || _showLobby || <ConferenceInfo /> }
                     <Notice />
+                    <ExamModeIndicator />
+                    {this.props._currentMode === RoomMode.EXAM && (
+                        <div className = 'exam-mode-banner'>
+                            { t('roomMode.examWarning') }
+                        </div>
+                    )}
                     <div
                         id = 'videospace'
                         onTouchStart = { this._onVideospaceTouchStart }>
@@ -303,6 +322,7 @@ class Conference extends AbstractConference<IProps, any> {
 
                     { _showPrejoin || _showLobby || (
                         <>
+                            {this.props._isLocalHostOrHigher && <RoomModeSelector />}
                             <span
                                 aria-level = { 1 }
                                 className = 'sr-only'
@@ -326,8 +346,7 @@ class Conference extends AbstractConference<IProps, any> {
                     { (_showLobby && !_showVisitorsQueue) && <LobbyScreen />}
                     { _showVisitorsQueue && <VisitorsQueue />}
                 </div>
-                <ParticipantsPane />
-                <CustomPanel />
+                <UnifiedSidePanel />
                 <ReactionAnimations />
             </div>
         );
@@ -444,7 +463,7 @@ class Conference extends AbstractConference<IProps, any> {
 
         // if we will be showing prejoin we don't want to call connect from init.
         // Connect will be dispatched from prejoin screen.
-        dispatch(init(!shouldShowPrejoin(this.props)));
+        dispatch(setPrejoinPageVisibility(!shouldShowPrejoin(this.props)));
 
         maybeShowSuboptimalExperienceNotification(dispatch, t);
     }
@@ -466,7 +485,9 @@ function _mapStateToProps(state: IReduxState) {
     return {
         ...abstractMapStateToProps(state),
         _backgroundAlpha: backgroundAlpha,
+        _currentMode: (state as any)['features/roomMode']?.currentMode,
         _isAnyOverlayVisible: Boolean(getOverlayToRender(state)),
+        _isLocalHostOrHigher: hasRoleOrHigher(state, 'HOST'),
         _layoutClassName: LAYOUT_CLASSNAMES[getCurrentLayout(state) ?? ''],
         _mouseMoveCallbackInterval: mouseMoveCallbackInterval,
         _overflowDrawer: overflowDrawer,
