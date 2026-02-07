@@ -1,0 +1,12 @@
+{
+  "builds": [
+    {
+      "src": "jitsi-meet/package.json",
+      "use": "@vercel/static-build",
+      "config": { "distDir": "jitsi-meet/build" }
+    }
+  ],
+  "routes": [
+    { "src": "/(.*)", "dest": "jitsi-meet/build/$1" }
+  ]
+}

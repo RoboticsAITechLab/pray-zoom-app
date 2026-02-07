@@ -1,0 +1,13 @@
+/**
+ * Constants for the attendance tracking feature.
+ */
+
+/**
+ * Action type constants.
+ */
+export const ATTENDANCE_START_TRACKING = 'ATTENDANCE_START_TRACKING';
+export const ATTENDANCE_STOP_TRACKING = 'ATTENDANCE_STOP_TRACKING';
+export const ATTENDANCE_ADD_ENTRY = 'ATTENDANCE_ADD_ENTRY';
+export const ATTENDANCE_UPDATE_ENTRY = 'ATTENDANCE_UPDATE_ENTRY';
+export const ATTENDANCE_OPEN_PANEL = 'ATTENDANCE_OPEN_PANEL';
+export const ATTENDANCE_CLOSE_PANEL = 'ATTENDANCE_CLOSE_PANEL';

@@ -1,0 +1,30 @@
+{
+  "packageId": "com.prayzoom.app",
+  "host": "pray-zoom-jet.vercel.app",
+  "name": "Pray-zoom",
+  "launcherName": "Pray-zoom",
+  "display": "standalone",
+  "themeColor": "#5A2D82",
+  "navigationColor": "#5A2D82",
+  "navigationColorDark": "#2A1B3D",
+  "navigationDividerColor": "#5A2D82",
+  "navigationDividerColorDark": "#2A1B3D",
+  "backgroundColor": "#5A2D82",
+  "enableNotifications": true,
+  "startUrl": "/",
+  "iconUrl": "https://pray-zoom-jet.vercel.app/static/pwa/icons/icon512.png",
+  "splashScreenFadeOutDuration": 300,
+  "appVersionName": "1.0.0",
+  "appVersionCode": 1,
+  "generatorApp": "bubblewrap-cli",
+  "webManifestUrl": "https://pray-zoom-jet.vercel.app/manifest.json",
+  "fallbackType": "customtabs",
+  "features": {
+    "locationDelegation": {
+      "enabled": true
+    }
+  },
+  "enableSiteSettingsShortcut": true,
+  "isChromeOSOnly": false,
+  "appVersion": "1.0.0"
+}
