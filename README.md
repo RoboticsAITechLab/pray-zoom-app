@@ -75,8 +75,8 @@ Visit [meet.jit.si](https://meet.jit.si) and create a meeting. All custom featur
 
 1. **Clone the repository:**
 ```bash
-git clone https://github.com/RoboticsAITechLab/pray-zoom.git
-cd pray-zoom
+git clone https://github.com/RoboticsAITechLab/pray-zoom-app.git
+cd pray-zoom-app
 ```
 
 2. **Install dependencies:**
@@ -200,8 +200,8 @@ This project is licensed under the Apache License 2.0 - see the [LICENSE](./LICE
 
 ## 📞 Support
 
-- **Issues**: [GitHub Issues](https://github.com/RoboticsAITechLab/pray-zoom/issues)
-- **Discussions**: [GitHub Discussions](https://github.com/RoboticsAITechLab/pray-zoom/discussions)
+- **Issues**: [GitHub Issues](https://github.com/RoboticsAITechLab/pray-zoom-app/issues)
+- **Discussions**: [GitHub Discussions](https://github.com/RoboticsAITechLab/pray-zoom-app/discussions)
 - **Documentation**: [Jitsi Handbook](https://jitsi.github.io/handbook/)
 
 ---
